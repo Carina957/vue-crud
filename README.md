@@ -1,76 +1,92 @@
 # Crud
 
-![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/vBPlNzp2PA3XldG8/img/bf763874-cb4b-4d1e-808d-d4799c1b775f.png)[]
+[![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/vBPlNzp2PA3XldG8/img/bf763874-cb4b-4d1e-808d-d4799c1b775f.png)](https://www.freecodecamp.org/news/crud-operations-explained)
 
-## [**What is CRUD?**](https://www.freecodecamp.org/news/crud-operations-explained/)
+> source: freecodecamp.org
+
+## [What is CRUD?](https://www.freecodecamp.org/news/crud-operations-explained)
 
 _CRUD refers to the four basic operations a software application should be able to perform – Create, Read, Update, and Delete._
 
-> CRUD  指的是软件应用程序应该能够执行的四个基本操作——创建、读取、更新和删除。
+> `CRUD`  指的是软件应用程序应该能够执行的四个基本操作——创建、读取、更新和删除。
 
 ## Directory
 
-    ├── components # submodule foler
-    │   └── Crud
-    │       ├── crud.js # crud 核心逻辑
-    │       ├── CRUD.operation.vue # 对多选表格的批量操作
-    │       ├── Pagination.vue # 分页组件
-    │       ├── RR.operation.vue # 表格筛选组件
-    │       ├── UD.operation.vue # 表格单项删除组件
-    │       └── UDOPT.operation.vue # 表格单项操作
+```plain
+├── components # submodule foler
+│   └── Crud
+│       ├── crud.js # crud 核心逻辑
+│       ├── CRUD.operation.vue # 对多选表格的批量操作
+│       ├── Pagination.vue # 分页组件
+│       ├── RR.operation.vue # 表格筛选组件
+│       ├── UD.operation.vue # 表格单项删除组件
+│       └── UDOPT.operation.vue # 表格单项操作
+```
 
 ## crud.js
 
-**Crud**  的核心逻辑，共计九个函数，最重要的就是  **CRUD(options)**  函数，封装了配置项、方法、钩子函数。
+**Crud**  的核心逻辑，共九个函数，最重要的就是  **CRUD(options)**  函数，封装了配置项、方法、钩子函数。
 
-- CRUD(options)  包含主要功能的公共方法
+- 主要功能的公共方法：CRUD(options)
 
-- callVmHook(crud, hook)  调用钩子函数
+- 调用钩子函数：callVmHook(crud, hook)
 
-- mergeOptions(src, opts)  合并配置项，将传入的参数合并到当前实例中
+- 合并配置项，将传入的参数合并到当前实例中：mergeOptions(src, opts)
 
-- presenter(crud)  生成  crud
+- 生成 crud：presenter(crud)
 
-- header()  头部
+- 头部：header()
 
-- pagination()  分页
+- 分页：pagination()
 
-- form(defaultForm)  表单
+- 表单：form(defaultForm)
 
-- crud(options = {})  初始化  Crud
+- 初始化  Crud：crud(options = {})
 
 ## Usage
 
-    <script>
-    import CRUD, { presenter, header, form, crud } from '@crud/crud'
-    import rrOperation from '@crud/RR.operation'
-    import pagination from '@crud/Pagination'
-    import crudReq from '@/api/xxx/xxx.js'
+```vue
+<template>
+  <el-table
+    v-loading="crud.loading"
+    :data="crud.data"
+  ></el-table>
 
-    const defaultForm = {
-      ...
-    }
+  <pagination />
+</template>
 
-    export default {
-      components: { rrOperation, pagination },
-      cruds() {
-        return CRUD({
-          title: 'xxx',
-          url: `/xxx/xxx`,
-          query: { xxx: 'xxx', xxx: 'xxx', ... },
-          crudMethod: { ...crudReq }
-        })
-      },
-      mixins: [presenter(), header(), form(defaultForm), crud()],
-    }
-    </script>
+<script>
+import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import rrOperation from '@crud/RR.operation'
+import pagination from '@crud/Pagination'
+import crudReq from '@/api/xxx/xxx.js'
+
+const defaultForm = {
+  ...
+}
+
+export default {
+  name: 'CrudDemo',
+  components: { rrOperation, pagination },
+  cruds() {
+    return CRUD({
+      title: 'xxx',
+      url: `/xxx/xxx`,
+      query: { xxx: 'xxx', xxx: 'xxx', ... },
+      crudMethod: { ...crudReq }
+    })
+  },
+  mixins: [presenter(), header(), form(defaultForm), crud()],
+}
+</script>
+```
 
 ## Configure
 
 ### CRUD Attributes
 
-| **参数**                | **说明**                         | **类型** | **可选值**                                      | **默认值**                                                       |
-| ----------------------- | -------------------------------- | -------- | ----------------------------------------------- | ---------------------------------------------------------------- |
+| 参数                    | 说明                             | 类型     | 可选值                                          | 默认值                                                           |
+| :---------------------- | :------------------------------- | :------- | ----------------------------------------------- | :--------------------------------------------------------------- |
 | tag                     | 同一页面中多个  crud  实例的标识 | String   | \---                                            | default                                                          |
 | idField                 | 接口响应对象  id  字段名         | String   | \---                                            | id                                                               |
 | title                   | 当前  crud  示例的标题           | String   | \---                                            | \---                                                             |
@@ -92,8 +108,8 @@ _CRUD refers to the four basic operations a software application shoul
 
 ### Default Attribute Description
 
-| **属性名**      | **说明**              | **默认值**                                                            |
-| --------------- | --------------------- | --------------------------------------------------------------------- |
+| 属性名          | 说明                  | 默认值                                                                |
+| :-------------- | :-------------------- | :-------------------------------------------------------------------- |
 | dataStatus      | 记录数据状态          | {}                                                                    |
 | status          | 操作状态，同  optShow | add:NORMAL，edit:NORMAL，cu，title                                    |
 | msg             | 操作提示              | {submit: '提交成功',add: '新增成功',edit: '编辑成功',del: '删除成功'} |
@@ -106,16 +122,16 @@ _CRUD refers to the four basic operations a software application shoul
 
 #### CRUD STATUS
 
-| **状态名** | **值** | **状态描述** |
-| ---------- | ------ | ------------ |
-| NORMAL     | 0      | 初始状态     |
-| PREPARED   | 1      | 已完成       |
-| PROCESSING | 2      | 进行中       |
+| 状态名     | 值  | 状态描述 |
+| :--------- | :-- | :------- |
+| NORMAL     | 0   | 初始状态 |
+| PREPARED   | 1   | 已完成   |
+| PROCESSING | 2   | 进行中   |
 
 #### CRUD METHODS
 
-| **方法名**             | **描述**                                                                                        |
-| ---------------------- | ----------------------------------------------------------------------------------------------- |
+| 方法名                 | 描述                                                                                            |
+| :--------------------- | :---------------------------------------------------------------------------------------------- |
 | submitSuccessNotify    | 提交成功的提示                                                                                  |
 | addSuccessNotify       | 新增成功的提示                                                                                  |
 | editSuccessNotify      | 编辑成功的提示                                                                                  |
@@ -153,8 +169,8 @@ _CRUD refers to the four basic operations a software application shoul
 
 #### CRUD HOOK
 
-| **函数名**         | **值**                 | **描述**                 |
-| ------------------ | ---------------------- | ------------------------ |
+| 函数名             | 值                     | 描述                     |
+| :----------------- | :--------------------- | :----------------------- |
 | beforeRefresh      | beforeCrudRefresh      | 刷新之前                 |
 | afterRefresh       | afterCrudRefresh       | 刷新之后                 |
 | beforeDelete       | beforeCrudDelete       | 删除之前                 |
@@ -178,19 +194,25 @@ _CRUD refers to the four basic operations a software application shoul
 | afterAddError      | afterCrudAddError      | 新建失败之后             |
 | afterEditError     | afterCrudEditError     | 编辑失败之后             |
 
-    <script>
-    export default {
-      methods: {
-        [CRUD.HOOK.hook_name](crud, form) {}
-      }
-    }
-    </script>
+**Usage**
+
+```vue
+<script>
+export default {
+  methods: {
+    [CRUD.HOOK.hook_name](crud, form) {
+      // do something.
+    },
+  },
+}
+</script>
+```
 
 #### CRUD NOTIFICATION_TYPE
 
-| **属性名** | **属性值** | **类型** |
-| ---------- | ---------- | -------- |
-| SUCCESS    | success    | 成功     |
-| WARNING    | warning    | 警告     |
-| INFO       | info       | 信息     |
-| ERROR      | error      | 错误     |
+| 属性名  | 属性值  | 类型 |
+| :------ | :------ | :--- |
+| SUCCESS | success | 成功 |
+| WARNING | warning | 警告 |
+| INFO    | info    | 信息 |
+| ERROR   | error   | 错误 |
